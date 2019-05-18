@@ -2,7 +2,7 @@
 #include "olc/olcPixelGameEngine.h"
 #include <unistd.h>
 #include <math.h>
-#include <png++/png.hpp>
+//#include <png++/png.hpp>
 
 #define SMALL_NUM   0.00000001 // anything that avoids division overflow
 // dot product (3D) which allows vector operations in arguments
@@ -39,6 +39,7 @@ struct map {
     };
     map(){}
 };
+/*
 struct texture{
     int width, height;
     png::image<png::rgba_pixel> img;
@@ -48,6 +49,7 @@ struct texture{
         height = img.get_height();
     }
 };
+*/
 struct intersection{
     float dist;
     vec2d gridpos;
@@ -96,7 +98,7 @@ class CPcastr3D : public olc::PixelGameEngine {
 public:
 	CPcastr3D(){sAppName = "Raycasting Demo";}
 public:
-	float fov = 2;
+	float fov = 0.4;
     float ang_per_pixel = fov / ScreenWidth();
     map layout; // Initialize Map
     vec2d playerpos = vec2d(3,3);
@@ -107,7 +109,7 @@ public:
 
     // Load Textures
     //char* brickpath = (char*)"~/C++ Things/raycasting/brick.png";
-    texture brick = texture((char*)"raycasting/brick.png");
+    //texture brick = texture((char*)"raycasting/brick.png");
 
 
 	bool OnUserCreate() override
@@ -125,7 +127,7 @@ public:
             intersection intersector = pixlray.findIntersect(layout, playerpos, playerdir);
             if(intersector.dist > 0){
                 int persp_h = (ScreenHeight()/2) / intersector.dist;
-                
+                /*
                 int tex_pixel_h = floor(brick.height/(persp_h*2));
                 for(int i=0;i<persp_h*2;i++){
                     png::rgba_pixel currentpix;
@@ -135,9 +137,9 @@ public:
                         currentpix = brick.img.get_pixel(floor(abs(intersector.relative_pos.y * brick.width)), tex_pixel_h*i);
                     }
                     Draw(x, (i+ScreenHeight()/2-persp_h)-pitch, olc::Pixel(currentpix.red, currentpix.green, currentpix.blue, currentpix.alpha));
-                }
+                }*/
                 
-                //DrawLine(x,(ScreenHeight()/2-persp_h)-pitch, x, (ScreenHeight()/2+persp_h)-pitch, olc::Pixel(1/intersector.dist,100/intersector.dist,255/intersector.dist));
+                DrawLine(x,(ScreenHeight()/2-persp_h)-pitch, x, (ScreenHeight()/2+persp_h)-pitch, olc::Pixel(1/intersector.dist,100/intersector.dist,255/intersector.dist));
             }
         }
 		// User Control
